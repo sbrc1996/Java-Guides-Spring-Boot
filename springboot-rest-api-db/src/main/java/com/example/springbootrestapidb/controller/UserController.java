@@ -5,6 +5,7 @@ import com.example.springbootrestapidb.entity.User;
 import com.example.springbootrestapidb.exception.ErrorDetails;
 import com.example.springbootrestapidb.exception.ResourceNotFoundException;
 import com.example.springbootrestapidb.services.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,7 +24,7 @@ public class UserController {
 
     //Build CREATE User REST API.
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         UserDto saveUserDto = userService.createUser(userDto);
         return new ResponseEntity<>(saveUserDto, HttpStatus.CREATED);
     }
@@ -57,18 +58,5 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity<>("User "+userId+" has been successfully deleted",HttpStatus.OK);
     }
-
-    //Desinging Exception Handler specific to a single Controller.
-//    @ExceptionHandler(ResourceNotFoundException.class)
-//    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
-//                                                                        WebRequest webRequest){
-//        ErrorDetails errorDetails = new ErrorDetails(
-//                LocalDateTime.now(),
-//                exception.getMessage(),
-//                webRequest.getDescription(false),
-//                "USER_NOT_FOUND"
-//        );
-//        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
-//    }
 
 }
